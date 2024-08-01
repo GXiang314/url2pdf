@@ -1,0 +1,7 @@
+.vscode
+node_modules
+dist
+outputs/*
+[0-9]{13}/*
+data.json
+!.gitkeep

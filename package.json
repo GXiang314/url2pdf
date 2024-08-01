@@ -1,0 +1,29 @@
+{
+  "name": "url2pdf",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "esbuild --bundle --platform=node --target=node18 --outdir=dist src/index.ts",
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
+    "start": "node dist/index.js"
+  },
+  "keywords": [],
+  "author": "GXiang314",
+  "license": "ISC",
+  "devDependencies": {
+    "@swc/core": "^1.7.3",
+    "@swc/jest": "^0.2.36",
+    "@types/jest": "^29.5.12",
+    "@types/node": "^22.0.0",
+    "cross-env": "^7.0.3",
+    "esbuild": "^0.23.0",
+    "jest": "^29.7.0",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.5.4"
+  },
+  "dependencies": {
+    "puppeteer": "^22.15.0",
+    "zod": "^3.23.8"
+  }
+}
