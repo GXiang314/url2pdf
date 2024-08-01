@@ -35,8 +35,10 @@ export class ModuleService {
     private printFailed(dirName: string) {
         if (this.failedInputList.length > 0) {  
             console.log("Failed to generate PDF:", this.failedInputList);
+            const pathToSave = `${dirName}_failed.json`;
             const json = JSON.stringify(this.failedInputList);
-            fs.writeFileSync(`outputs/${dirName}_failed.json`, json);
+            fs.writeFileSync(pathToSave, json);
+            console.log(`Failed to generate Input Data: ${pathToSave}`);
         }
     }
 
