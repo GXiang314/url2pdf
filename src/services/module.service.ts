@@ -6,19 +6,28 @@ export type CommandInput = {
     title: string;
 }[]
 
+type PrintParams = {
+    page: Page
+    uri: { url: string; title: string; }
+    dirName: string
+    indexOf: number
+    total: number
+}
+
 export class ModuleService {
     private failedInputList: CommandInput = []
 
     public async execute(uriList: CommandInput): Promise<void> {
         const browser = await puppeteer.launch({ headless: true });
         // mkdir from timestamp
-        const dirName = `outputs/${Date.now().toString()}`;
+        const start = Date.now();
+        const dirName = `outputs/${start.toString()}`;
         this.mkdir(dirName);
 
         const page = await browser.newPage();
-        for (const uri of uriList) {
+        for (const [index, uri] of uriList.entries()) {
             try {
-                await this.printUriWebPageToPDF(page, uri, dirName);
+                await this.printUriWebPageToPDF({ page, uri, dirName, indexOf: index + 1, total: uriList.length });
             } catch (error: any) {
                 console.log(`Error generating PDF! ${uri.title}.pdf`);
                 console.log(error.message);
@@ -26,10 +35,16 @@ export class ModuleService {
             }
         }
         await browser.close();
+        this.printResult(dirName, uriList, start);
+        this.printFailed(dirName);
+    }
+
+    private printResult(dirName: string, uriList: CommandInput, start: number) {
         console.log("PDF generated complete!", dirName);
         console.log("Success:", uriList.length - this.failedInputList.length);
         console.log("Failed:", this.failedInputList.length);
-        this.printFailed(dirName);
+        const end = Date.now();
+        console.log("Time taken(sec):", (end - start) / 1000);
     }
 
     private printFailed(dirName: string) {
@@ -42,10 +57,12 @@ export class ModuleService {
         }
     }
 
-    private async printUriWebPageToPDF(page: Page, uri: { url: string; title: string; }, dirName: string) {
+    private async printUriWebPageToPDF(payload: PrintParams) {
+        const { page, uri, dirName, indexOf: index, total } = payload
+        console.log(`Printing (${index}/${total}): ${uri.title}`);
         await page.goto(uri.url, { timeout: 0 });
         await page.pdf({ path: `${dirName}/${uri.title}.pdf`, format: 'A4', printBackground: true });
-        console.log(`PDF generated successfully! ${uri.title}.pdf`);
+        console.log(`PDF generated successfully!`);
     }
 
     private mkdir(dirName: string) {
