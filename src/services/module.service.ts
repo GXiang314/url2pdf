@@ -17,6 +17,10 @@ type PrintParams = {
 export class ModuleService {
     private failedInputList: CommandInput = []
 
+    private urlToFilename(url) {
+        return url.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+    }
+
     public async execute(uriList: CommandInput): Promise<void> {
         const browser = await puppeteer.launch({ headless: true });
         // mkdir from timestamp
@@ -59,6 +63,9 @@ export class ModuleService {
 
     private async printUriWebPageToPDF(payload: PrintParams) {
         const { page, uri, dirName, indexOf: index, total } = payload
+        if (uri.title == "") {
+            uri.title = this.urlToFilename(uri.url)
+        }
         console.log(`Printing (${index}/${total}): ${uri.title}`);
         await page.goto(uri.url, { timeout: 0 });
         await page.pdf({ path: `${dirName}/${uri.title}.pdf`, format: 'A4', printBackground: true });

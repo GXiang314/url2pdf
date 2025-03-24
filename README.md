@@ -23,6 +23,8 @@ schema:
 ]
 ```
 
+If you do not provide the title for a URL, the address of the URL will be used as a filename by replacing forbidden characters to underscore (**_**).
+
 #### Installation
 
 ```bash
