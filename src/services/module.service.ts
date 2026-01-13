@@ -1,14 +1,11 @@
 import fs from 'fs';
 import puppeteer, { Page } from "puppeteer";
-
-export type CommandInput = {
-    url: string;
-    title: string;
-}[]
+import { CommandInput } from '../types';
+import { titleToFilename, urlToFilename } from '../helpers/filename';
 
 type PrintParams = {
     page: Page
-    uri: { url: string; title: string; }
+    uri: { url: string; title?: string; }
     dirName: string
     indexOf: number
     total: number
@@ -59,10 +56,18 @@ export class ModuleService {
 
     private async printUriWebPageToPDF(payload: PrintParams) {
         const { page, uri, dirName, indexOf: index, total } = payload
-        console.log(`Printing (${index}/${total}): ${uri.title}`);
         await page.goto(uri.url, { timeout: 0 });
+        if (!uri.title) {
+            uri.title = await this.getTitleFromPage(page, uri.url)
+        }
+        console.log(`Printing (${index}/${total}): ${uri.title}`);
         await page.pdf({ path: `${dirName}/${uri.title}.pdf`, format: 'A4', printBackground: true });
         console.log(`PDF generated successfully!`);
+    }
+
+    private async getTitleFromPage(page: Page, url: string): Promise<string | undefined> {
+        const title = await page.evaluate(() => document.title) ?? urlToFilename(url);
+        return titleToFilename(title);
     }
 
     private mkdir(dirName: string) {

@@ -1,0 +1,10 @@
+[
+  {
+    "url": "https://valid.com",
+    "title": "Valid URL"
+  },
+  {
+    "url": "not-a-url",
+    "title": "Invalid URL"
+  }
+]

@@ -1,29 +1,49 @@
 {
   "name": "url2pdf",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "build": "esbuild --bundle --platform=node --target=node18 --outdir=dist src/index.ts",
-    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
-    "start": "node dist/index.js"
+  "type": "module",
+  "description": "CLI tool to convert web pages to PDF",
+  "main": "dist/cli.js",
+  "bin": {
+    "url2pdf": "./dist/cli.js"
   },
-  "keywords": [],
+  "scripts": {
+    "build": "rollup -c",
+    "dev": "tsx watch src/dev.ts",
+    "start": "node dist/cli.js",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --coverage"
+  },
+  "keywords": [
+    "cli",
+    "pdf",
+    "converter",
+    "url",
+    "web-to-pdf"
+  ],
   "author": "GXiang314",
   "license": "ISC",
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^29.0.0",
+    "@rollup/plugin-json": "^6.1.0",
+    "@rollup/plugin-node-resolve": "^16.0.3",
+    "@rollup/plugin-typescript": "^12.3.0",
     "@swc/core": "^1.7.3",
-    "@swc/jest": "^0.2.36",
-    "@types/jest": "^29.5.12",
     "@types/node": "^22.0.0",
-    "cross-env": "^7.0.3",
+    "@vitest/ui": "^4.0.17",
     "esbuild": "^0.23.0",
-    "jest": "^29.7.0",
-    "ts-node-dev": "^2.0.0",
-    "typescript": "^5.5.4"
+    "rollup": "^4.55.1",
+    "rollup-plugin-typescript2": "^0.36.0",
+    "tslib": "^2.8.1",
+    "tsx": "^4.21.0",
+    "typescript": "^5.5.4",
+    "vitest": "^4.0.17"
   },
   "dependencies": {
+    "commander": "^14.0.2",
     "puppeteer": "^22.15.0",
     "zod": "^3.23.8"
-  }
+  },
+  "packageManager": "pnpm@10.26.2"
 }
