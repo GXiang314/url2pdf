@@ -64,4 +64,4 @@ PDFs are saved to `outputs/<timestamp>/` with automatic title generation from pa
 
 ## License
 
-ISC
+MIT

@@ -23,7 +23,7 @@
     "web-to-pdf"
   ],
   "author": "GXiang314",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@rollup/plugin-commonjs": "^29.0.0",
     "@rollup/plugin-json": "^6.1.0",
